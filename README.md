@@ -50,6 +50,7 @@ Whent he video playback is completed
 
 # Notes
 - Currently runs only on Microsoft Windows. Tested on 64 bit OS.
+- May require [HEVC Video Extensions](https://www.microsoft.com/en-us/p/hevc-video-extensions/9nmzlz57r3t7?activetab=pivot:overviewtab) based on your usage.
 
 # Contact
 [@github](https://www.github.com/adrenak)  
