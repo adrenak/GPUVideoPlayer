@@ -11,36 +11,35 @@ namespace Adrenak.GPUVideoPlayer.Demo {
 		bool isPlaying;
 
 		private void Start() {
-			player.OnPaused.AddListener(() => {
-				message.text = ("Paused");
-			});
-
-			player.OnPlay.AddListener(() => {
-				message.text = ("Playing");
-				isPlaying = true;
-				display.texture = player.MediaTexture;
-			});
-
-			player.OnStopped.AddListener(() => {
-				message.text = ("Stopped");
-				isPlaying = false;
-				display.texture = null;
-			});
-
-			player.OnEnded.AddListener(() => {
-				message.text = ("Ended");
-				isPlaying = false;
-			});
-
-			player.OnLoaded.AddListener(() => {
-				message.text = ("Loaded");
-				var ratio = (float)player.MediaDescription.width / player.MediaDescription.height;
-				display.GetComponent<AspectRatioFitter>().aspectRatio = ratio;
-			});
-
-			player.OnFailed.AddListener(() => {
-				message.text = ("Could not load");
-				isPlaying = false;
+			player.onStateChanged.AddListener(state => {
+				switch (state) {
+					case GPUVideoPlayer.State.Paused:
+						message.text = ("Paused");
+						break;
+					case GPUVideoPlayer.State.Playing:
+						message.text = ("Playing");
+						isPlaying = true;
+						display.texture = player.MediaTexture;
+						break;
+					case GPUVideoPlayer.State.Stopped:
+						message.text = ("Stopped");
+						isPlaying = false;
+						display.texture = null;
+						break;
+					case GPUVideoPlayer.State.Ended:
+						message.text = ("Ended");
+						isPlaying = false;
+						break;
+					case GPUVideoPlayer.State.Loaded:
+						message.text = ("Loaded");
+						var ratio = (float)player.MediaDescription.width / player.MediaDescription.height;
+						display.GetComponent<AspectRatioFitter>().aspectRatio = ratio;
+						break;
+					case GPUVideoPlayer.State.Failed:
+						message.text = ("Could not load");
+						isPlaying = false;
+						break;
+				}
 			});
 		}
 

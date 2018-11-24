@@ -1,34 +1,46 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Adrenak.GPUVideoPlayer {
 	public class GPUVideoPlayer : MonoBehaviour {
+		public enum State {
+			Idle,
+			Loaded,
+			Failed,
+			Playing,
+			Paused,
+			Stopped,
+			Ended
+		}
+
 		Plugin.StateChangedCallback m_NativeCallback;
 
-		[HideInInspector] public UnityEvent OnLoaded;
-		[HideInInspector] public UnityEvent OnFailed;
-		[HideInInspector] public UnityEvent OnPlay;
-		[HideInInspector] public UnityEvent OnPaused;
-		[HideInInspector] public UnityEvent OnStopped;
-		[HideInInspector] public UnityEvent OnEnded;
-
-		Description m_Description;
 		/// <summary>
 		/// Returns the <see cref="Description"/> data for the media being played
 		/// </summary>
 		public Description MediaDescription {
 			get { return m_Description; }
 		}
+		Description m_Description;
 
-		Texture2D m_Texture;
 		/// <summary>
 		/// Returns a reference of the Texture2D object on which the video frames is updated
 		/// </summary>
 		public Texture2D MediaTexture {
 			get { return m_Texture; }
 		}
+		Texture2D m_Texture;
+
+		/// <summary>
+		/// The current state of the video player
+		/// </summary>
+		public State MediaState {
+			get { return m_State; }
+		}
+		State m_State;
+
+		public StateUnityEvent onStateChanged = new StateUnityEvent();
 
 		[Header("Auto Play Configuration")]
 		public bool autoPlay;
@@ -61,7 +73,7 @@ namespace Adrenak.GPUVideoPlayer {
 				return false;
 			}
 			if (m_Texture == null && CreateTexture(m_Description.width, m_Description.height)) {
-				OnPlay.Invoke();
+				ChangeState(State.Playing);
 				return true;
 			}
 			return false;
@@ -76,7 +88,7 @@ namespace Adrenak.GPUVideoPlayer {
 				LogError("Could not pause");
 				return false;
 			}
-			OnPaused.Invoke();
+			ChangeState(State.Paused);
 			return true;
 		}
 
@@ -90,7 +102,7 @@ namespace Adrenak.GPUVideoPlayer {
 				return false;
 			}
 
-			OnStopped.Invoke();
+			ChangeState(State.Stopped);
 			Unload();
 			return true;
 		}
@@ -165,10 +177,10 @@ namespace Adrenak.GPUVideoPlayer {
 		// INTERNAL METHODS
 		// ================================================
 		IEnumerator Start() {
-			if (autoPlay) {
-				OnLoaded.AddListener(() => Play());
-				Load(autoPath);
-			}
+			if (autoPlay) Load(autoPath);
+			onStateChanged.AddListener(state => {
+				if (autoPlay) Play();
+			});
 
 			while (true) {
 				yield return new WaitForEndOfFrame();
@@ -198,22 +210,22 @@ namespace Adrenak.GPUVideoPlayer {
 			m_Texture = null;
 		}
 
-		void HandleStateChange(StateChangedMessage args) {
+		void HandleStateChange(Plugin.StateChangedMessage args) {
 			var stateType = (StateType)Enum.ToObject(typeof(StateType), args.type);
 
 			switch (stateType) {
 				case StateType.Opened:
 					m_Description = args.description;
-					OnLoaded.Invoke();
+					ChangeState(State.Loaded);
 					break;
 				case StateType.Failed:
-					OnFailed.Invoke();
+					ChangeState(State.Failed);
 					break;
 				case StateType.StateChanged:
 					var playbackState = (PlaybackState)Enum.ToObject(typeof(PlaybackState), args.state);
 					if (playbackState == PlaybackState.Ended) {
 						Unload();
-						OnEnded.Invoke();
+						ChangeState(State.Ended);
 					}
 					break;
 			}
@@ -223,8 +235,32 @@ namespace Adrenak.GPUVideoPlayer {
 			Unload();
 		}
 
+		void ChangeState(State state) {
+			m_State = state;
+			onStateChanged.Invoke(m_State);
+		}
+
 		void LogError(object error) {
 			Debug.LogError("[GPUVideoPlayer] " + error);
+		}
+
+		// ================================================
+		// INTERNAL ENUMS
+		// ================================================
+		enum StateType {
+			None = 0,
+			Opened,
+			StateChanged,
+			Failed,
+		}
+
+		enum PlaybackState {
+			None = 0,
+			Opening,
+			Buffering,
+			Playing,
+			Paused,
+			Ended
 		}
 	}
 }

@@ -28,25 +28,23 @@ Returns the `Texture2D` object that is updated by the plugin with video frames
 - `MediaDescription`  
 Returns some information of the video being played. These include the video width, height, duration and whether it can be seeked on.
 
-### UnityEvents:
-- `OnLoaded`  
-When the player is done loading a video successfully
-- `OnFailed`  
-When he player fails to load a video  
-- `OnPlay`  
-When the player starts the playback of the video  
-- `OnPaused`  
-When the playback is paused  
-- `OnStopped`  
-When the playback is stopped  
-- `OnEnded`  
-Whent he video playback is completed  
+### States and Events:
+The states of a `GPUVideoPlayer` instance is represented using an enum called `GPUVideoPlayer.State' and has the following values:  
+- Idle  
+- Loaded  
+- Failed  
+- Playing  
+- Paused  
+- Stopped  
+- Ended
+
+The current state can be obtained using `GPUVideoPlayer.MediaState` which derives from `UnityEvent<GPUVideoPlayer.State>`  
 
 # Performance
 - `GPUVideoPlayer` was tested with an 800mb `8192x4096` 30FPS H265 MP4 video file. Loading took 195 ms. Video playback was at 30FPS with Unity's framerate at 60.
 
 # Getting Started  
-- A simple video player app with load, pause, stop, 5sec FWD, 5sec BWD is available inside the Demo folder
+- A simple video player app with load, pause, stop, 5sec FWD, 5sec BWD is available inside the Demo folder. The demo should be a good example to see how to get started.  
 
 # Notes
 - Currently runs only on Microsoft Windows. Tested on 64 bit OS.

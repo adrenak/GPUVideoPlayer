@@ -3,6 +3,24 @@ using System.Runtime.InteropServices;
 
 namespace Adrenak.GPUVideoPlayer {
 	public static class Plugin {
+		[StructLayout(LayoutKind.Explicit, Pack = 4)]
+		public struct StateChangedMessage {
+			[FieldOffset(0)]
+			public UInt16 type;
+
+			[FieldOffset(4)]
+			public UInt16 state;
+
+			[FieldOffset(4)]
+			public Int64 hresult;
+
+			[FieldOffset(4)]
+			public Description description;
+
+			[FieldOffset(4)]
+			public Int64 position;
+		};
+
 		public delegate void StateChangedCallback(StateChangedMessage args);
 
 		[DllImport("MediaPlayback", CallingConvention = CallingConvention.StdCall, EntryPoint = "CreateMediaPlayback")]
