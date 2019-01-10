@@ -120,6 +120,15 @@ namespace Adrenak.GPUVideoPlayer {
 			return rate;
 		}
 
+        /// <summary>
+        /// Set the rate of playback. Eg.4x
+        /// </summary>
+        /// <param name="rate">The playback rate</param>
+        public void SetPlaybackRate(float rate)
+        {
+            Plugin.SetPlaybackRate(rate);
+        }
+
 		/// <summary>
 		/// Gets the duration of the video. In 1/10^7 seconds. So a 60 second video will return 600000000
 		/// </summary>

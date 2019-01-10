@@ -72,6 +72,7 @@ DECLARE_INTERFACE_IID_(IMediaPlayerPlayback, IUnknown, "9669c78e-42c4-4178-a1e3-
 	STDMETHOD(GetPosition)(_COM_Outptr_ LONGLONG* position) PURE;
 	STDMETHOD(GetDuration)(_COM_Outptr_ LONGLONG* duration) PURE;
 	STDMETHOD(GetPlaybackRate)(_COM_Outptr_ DOUBLE* rate) PURE;
+	STDMETHOD(SetPlaybackRate)(_In_ DOUBLE rate) PURE;
 	STDMETHOD(SetPosition)(_In_ LONGLONG position) PURE;
 };
 
@@ -109,6 +110,7 @@ public:
 	IFACEMETHOD(GetPosition(_COM_Outptr_ LONGLONG* position));
 	IFACEMETHOD(GetDuration(_COM_Outptr_ LONGLONG* duration));
 	IFACEMETHOD(GetPlaybackRate(_COM_Outptr_ DOUBLE* rate));
+	IFACEMETHOD(SetPlaybackRate(_In_ DOUBLE rate));
 	IFACEMETHOD(SetPosition(_In_ LONGLONG position));
 
 protected:
