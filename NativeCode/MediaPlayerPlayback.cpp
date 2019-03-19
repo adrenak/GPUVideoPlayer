@@ -279,6 +279,17 @@ HRESULT CMediaPlayerPlayback::GetPlaybackRate(DOUBLE* rate)
 	return S_OK;
 }
 
+HRESULT CMediaPlayerPlayback::SetPlaybackRate(DOUBLE rate) 
+{
+	Log(Log_Level_Info, L"CMediaPlayerPlayback::SetPlaybackRate()");
+	if (nullptr != m_mediaPlaybackSession)
+	{
+		m_mediaPlaybackSession->put_PlaybackRate(rate);
+	}
+
+	return S_OK;
+}
+
 
 _Use_decl_annotations_
 HRESULT CMediaPlayerPlayback::CreateMediaPlayer()

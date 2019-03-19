@@ -73,6 +73,11 @@ namespace Adrenak.GPUVideoPlayer.Demo {
 			player.SeekByTime(position + 5 * 10000000);
 		}
 
+        public void SetPlaybackRate(float rate)
+        {
+            player.SetPlaybackRate(rate);
+        }
+
 		public void MoveBackwardFiveSeconds() {
 			var position = player.GetPosition();
 			player.SeekByTime(position - 5 * 10000000);

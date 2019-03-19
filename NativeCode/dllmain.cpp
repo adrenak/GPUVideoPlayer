@@ -141,6 +141,13 @@ extern "C" HRESULT UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API GetPlaybackRate(_O
 	return s_spMediaPlayback->GetPlaybackRate(rate);
 }
 
+extern "C" HRESULT UNITY_INTERFACE_EXPORT UNITY_INTERFACE_API SetPlaybackRate(_In_ DOUBLE rate)
+{
+	NULL_CHK(s_spMediaPlayback);
+
+	return s_spMediaPlayback->SetPlaybackRate(rate);
+}
+
 // --------------------------------------------------------------------------
 // UnitySetInterfaces
 
