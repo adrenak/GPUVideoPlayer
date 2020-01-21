@@ -1,5 +1,8 @@
+# Note . 
+This repository is not being actively maintained. Issues may not be addressed.  
+
 # GPUVideoPlayer
-Alternative to Unity's `VideoPlayer` component. RUn HEVC/H265 videos with GPU decoding, lower loading times and better performance.
+Alternative to Unity's `VideoPlayer` component. Run HEVC/H265 videos with GPU decoding, lower loading times and better performance.
 
 # API/Usage
 The `GPUVideoPlayer` class derives from `MonoBehaviour` and needs to be on the scene. `GPUVideoPlayer` component also provides some primitive auto play features.  
