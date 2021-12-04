@@ -1,4 +1,6 @@
 # Note . 
+Thanks to [xue-fei](https://github.com/xue-fei) for identifying the original authors of the CPP code. Please refer to [MediaPlayback](https://github.com/vladkol/MediaPlayback) for a more suitable solution.
+  
 This repository is not being actively maintained. Issues may not be addressed.  
 
 # GPUVideoPlayer
